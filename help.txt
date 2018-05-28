@@ -1,0 +1,52 @@
+Python 3.6.4 (v3.6.4:d48eceb, Dec 19 2017, 06:54:40) [MSC v.1900 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import xml.etree.ElementTree as ET
+>>> tree = ET.parse('leticia_xml_2/XMLs 2012/31120803919089000182570000000281051000904894.xml')
+>>> root = tree.getroot()
+>>> root.tag
+'{http://www.portalfiscal.inf.br/cte}cteProc'
+>>> root.attrib
+{'versao': '1.04'}
+>>> root
+<Element '{http://www.portalfiscal.inf.br/cte}cteProc' at 0x0000024A89B72AE8>
+>>> root[0]
+<Element '{http://www.portalfiscal.inf.br/cte}CTe' at 0x0000024A89C09A48>
+>>> root[1]
+<Element '{http://www.portalfiscal.inf.br/cte}protCTe' at 0x0000024A8A9AD958>
+>>> root[2]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: child index out of range
+>>> root[0][1]
+<Element '{http://www.w3.org/2000/09/xmldsig#}Signature' at 0x0000024A8A9AD098>
+>>> root[0][0]
+<Element '{http://www.portalfiscal.inf.br/cte}infCte' at 0x0000024A8A9808B8>
+>>> root.get('versao')
+'1.04'
+>>> root.text
+'\n    '
+
+=========================================================================
+
+Python 3.6.4 (v3.6.4:d48eceb, Dec 19 2017, 06:54:40) [MSC v.1900 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import xml.etree.ElementTree as ET
+>>> tree = ET.parse('leticia_xml_2/XMLs 2013/15130523314594003550550020000533181491889118.xml')
+>>> root = tree.getroot()
+>>> root.tag
+'{http://www.portalfiscal.inf.br/nfe}nfeProc'
+>>> root.attrib
+{'versao': '2.00'}
+
+================================================================================
+Python 3.6.4 (v3.6.4:d48eceb, Dec 19 2017, 06:54:40) [MSC v.1900 64 bit (AMD64)] on win32       
+Type "help", "copyright", "credits" or "license" for more information.                          
+>>> import xml.etree.ElementTree as ET                                                          
+>>> tree = ET.parse('leticia_xml_2/XMLs 2016/21160723314594003630550020001868021717404255.xml') 
+>>> root = tree.getroot()                                                                       
+>>> root.tag                                                                                    
+'{http://www.portalfiscal.inf.br/nfe}nfeProc'                                                   
+>>> root.attrib                                                                                 
+{'versao': '3.10'}                                                                              
+>>> root.get('versao')                                                                          
+'3.10'                                                                                          

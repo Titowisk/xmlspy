@@ -13,6 +13,8 @@
 import argparse
 import xml.etree.ElementTree as ET
 import os
+import re
+import shutil
 
 """
 Definition of parse
@@ -42,9 +44,11 @@ def main():
     args = parser.parse_args()
 
     xml_dir_path = args.path
-    xml_path_handler(xml_dir_path)
+    list_of_xml_files = xml_path_handler(xml_dir_path) # step 1
 
-    print(os.getcwd())
+    xml_version_parser(list_of_xml_files, xml_dir_path) # step 2 and 3
+    
+    # print(os.getcwd())
 
 # step 1
 
@@ -66,5 +70,30 @@ def xml_path_handler(xml_dir_path):
     else:
         print("There aren't xml files in this directory")
     return list_of_xml_files
+
+# step 2
+
+def xml_version_parser(list_of_xml_files, xml_dir_path):
+    # this function takes a list of xml files and iterate over them to parse each file 
+    # into different types inside the corresponding folder
+    
+    type_regex = re.compile(r'cteProc|nfeProc', re.IGNORECASE) # re.compile(r'\w*Proc')
+
+    for xf in list_of_xml_files:
+        xml_file_path = os.path.join(xml_dir_path, xf.name) # leticia_xml_2/XMLs 2016/'xf.name'
+        tree = ET.parse(xml_file_path)
+        root = tree.getroot()
+        type_version = root.get('versao')
+        mo = type_regex.search(root.tag)
+
+        if (mo and type_version):
+            dir_name = "xmlspy_{0}_{1}".format(mo.group(), type_version)
+            new_dir_path = os.path.join(xml_dir_path, dir_name)
+            # create dir
+            if not (os.path.isdir(new_dir_path)):
+                os.mkdir(new_dir_path)
+            #copy file into dir https://docs.python.org/3.6/library/shutil.html#shutil.copy
+            shutil.copy(xml_file_path, new_dir_path)
+
 
 main()
