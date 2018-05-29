@@ -72,7 +72,7 @@ def xml_path_handler(xml_dir_path):
         print("There aren't xml files in {0}".format(dir_name))
     return list_of_xml_files
 
-# step 2
+# step 2 and 3
 
 def xml_version_parser(list_of_xml_files, xml_dir_path):
     # this function takes a list of xml files and iterate over them to parse each file 
@@ -90,10 +90,15 @@ def xml_version_parser(list_of_xml_files, xml_dir_path):
         if (mo and type_version):
             dir_name = "xmlspy_{0}_{1}".format(mo.group(), type_version)
             new_dir_path = os.path.join(xml_dir_path, dir_name)
+
+            # prevents walking into created directory if this algorithm is ran twice or more times
+            if dir_name == os.path.basename(xml_dir_path):
+                print("{0} already exists, breaking loop.".format(dir_name))
+                break
             # create dir
             if not (os.path.isdir(new_dir_path)):
                 os.mkdir(new_dir_path)
-            #copy file into dir https://docs.python.org/3.6/library/shutil.html#shutil.copy
+            # copy file into dir https://docs.python.org/3.6/library/shutil.html#shutil.copy
             shutil.copy(xml_file_path, new_dir_path)
 
 
