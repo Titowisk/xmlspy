@@ -33,6 +33,12 @@ StopIteration
 ```
 
 ## xml_path_handler(xml_dir_path)
+
 Recebe o caminho do diretório que contém os arquivos xml a serem processados (dentro da própria pasta, ou em sub-pastas)
 A função então irá garantir que apenas arquivos de extensão XML serão processados, ela imprimi o número de arquivos XML lidos para posterior
 verificação e devolve uma **lista** contendo todos os nomes de arquivos XML lidos.
+
+## xml_version_parser(list_of_xml_files, xml_dir_path):
+
+Recebe a lista da função anterior e o caminho do diretório que contém os arquivos xml. Ele lê cada arquivo, identifica o tipo e versão e separa cada arquivo de acordo com esses critérios mencionados. A separação ocorre da seguinte forma: a função cria um diretório de nome ```xmlspy_<tipo>_<versão>``` e cópia os arquivos correspondentes para dentro da pasta.
+A função também evita a possibilidade de criar pastas repetidas caso seja rodado novamente.
