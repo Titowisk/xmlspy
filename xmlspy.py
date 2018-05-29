@@ -41,13 +41,24 @@ something simpler than a string.
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("path", help="path of the directory containing xmls files")
+    parser.add_argument("-d", "--delete", 
+        help="deletes all the directories created by the xml parser and its files",
+        action="store_true"
+    )
     args = parser.parse_args()
 
     xml_dir_path = args.path
 
-    for root, dirs, files in os.walk(xml_dir_path):
-        list_of_xml_files = xml_path_handler(root)
-        xml_version_parser(list_of_xml_files, root) # step 2 and 3
+    if args.delete:
+        #deletes all xmls files https://docs.python.org/3/library/shutil.html#shutil.rmtree
+        for root, dirs, files in os.walk(xml_dir_path):
+            if any( t in os.path.basename(root) for t in ('cteProc', 'nfeProc')):
+                shutil.rmtree(root)
+                print("{0} directory and its whole tree delete successfully".format(os.path.basename(root))) 
+    else:
+        for root, dirs, files in os.walk(xml_dir_path):
+            list_of_xml_files = xml_path_handler(root)
+            xml_version_parser(list_of_xml_files, root)
     
     # print(os.getcwd())
 
