@@ -44,9 +44,10 @@ def main():
     args = parser.parse_args()
 
     xml_dir_path = args.path
-    list_of_xml_files = xml_path_handler(xml_dir_path) # step 1
 
-    xml_version_parser(list_of_xml_files, xml_dir_path) # step 2 and 3
+    for root, dirs, files in os.walk(xml_dir_path):
+        list_of_xml_files = xml_path_handler(root)
+        xml_version_parser(list_of_xml_files, root) # step 2 and 3
     
     # print(os.getcwd())
 
@@ -68,7 +69,7 @@ def xml_path_handler(xml_dir_path):
     if xml_quantity > 0:    
         print("There are {0} xml files in {1}".format(xml_quantity, dir_name))
     else:
-        print("There aren't xml files in this directory")
+        print("There aren't xml files in {0}".format(dir_name))
     return list_of_xml_files
 
 # step 2
