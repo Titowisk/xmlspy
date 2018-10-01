@@ -45,6 +45,10 @@ def main():
         help="deletes all the directories created by the xml parser and its files",
         action="store_true"
     )
+    parser.add_argument("-l", "--log", 
+        help="shows quantity information about the execution of the algorithm",
+        action="store_true"
+    )
     args = parser.parse_args()
 
     xml_dir_path = args.path
@@ -57,8 +61,14 @@ def main():
                 print("{0} directory and its whole tree delete successfully".format(os.path.basename(root))) 
     else:
         for root, dirs, files in os.walk(xml_dir_path):
+            quantity_verifier = {} # each directory will have a verifier
             list_of_xml_files = xml_path_handler(root)
-            xml_version_parser(list_of_xml_files, root)
+            xml_version_parser(list_of_xml_files, root, quantity_verifier)
+            # quantity verification
+            if (args.log): verifier_format(quantity_verifier, root)
+            
+            
+        
     
     # print(os.getcwd())
 
@@ -85,7 +95,7 @@ def xml_path_handler(xml_dir_path):
 
 # step 2 and 3
 
-def xml_version_parser(list_of_xml_files, xml_dir_path):
+def xml_version_parser(list_of_xml_files, xml_dir_path, quantity_verifier):
     # this function takes a list of xml files and iterate over them to parse each file 
     # into different types inside the corresponding folder
     
@@ -112,5 +122,22 @@ def xml_version_parser(list_of_xml_files, xml_dir_path):
             # copy file into dir https://docs.python.org/3.6/library/shutil.html#shutil.copy
             shutil.copy(xml_file_path, new_dir_path)
 
+            # count +1 for each (type, type_version)
+            verifier = '{type}_{type_version}'.format(type=mo.group(), type_version=type_version)
+            quantity_verifier.setdefault(verifier, 0)
+            quantity_verifier[verifier] += 1
+
+
+def verifier_format(quantity_verifier, root):
+    # Friendly format for log output
+    log_format = ''
+    log_format += 'Directory: {0}\n'.format(os.path.basename(root))
+    quant_sum = 0
+    for k, v in quantity_verifier.items():
+        quant_sum += v
+        log_format += '{name}: {quantity}\n'.format(name=k, quantity=v) 
+    log_format += 'Total: {0}\n'.format(quant_sum)
+    log_format += ('=-='*10)
+    print(log_format)
 
 main()
